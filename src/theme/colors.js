@@ -2,7 +2,7 @@ const colors = {
   darkPurple: '#231d54',
   dark: '#1e1e1e',
   purple: '#8100ff',
-  blueLight: "#788eec",
+  blueLight: '#788eec',
   lightPurple: '#9388db',
   lightGrayPurple: '#f7f7fb',
   pink: '#ff3d69',
@@ -16,6 +16,9 @@ const colors = {
   primaryText: '#2e2e2d',
   lightyellow: '#ffffe0',
   black: '#000000',
+  warnaFont: '#BC1823',
+  input: '#D9D9D9',
+  grey: '#D9D9D9',
 }
 
 export default colors

@@ -1,13 +1,16 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createStackNavigator } from '@react-navigation/stack'
 import FontIcon from 'react-native-vector-icons/FontAwesome5'
 import { colors } from 'theme'
+import { Reservasi } from '../../../scenes/reservasi'
+import { Reservasistack } from '../stacks/ReservasiStack'
 
 // stack navigators
 import { HomeNavigator, ProfileNavigator, ConnectNavigator } from '../stacks'
 
 const Tab = createBottomTabNavigator()
-
+const Stack = createStackNavigator()
 const TabNavigator = () => {
   return (
     <Tab.Navigator
@@ -18,11 +21,11 @@ const TabNavigator = () => {
           // borderTopWidth: 1,
           // paddingBottom: 5,
           // paddingTop: 5,
-        }
+        },
       }}
       defaultScreenOptions={{
         headerShown: false,
-        headerTransparent: true
+        headerTransparent: true,
       }}
       screenOptions={({ route }) => ({
         headerShown: false,
@@ -38,39 +41,37 @@ const TabNavigator = () => {
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({ color, size }) => (
-            <FontIcon
-              name="home"
-              color={color}
-              size={size}
-            />
+            <FontIcon name="home" color={color} size={size} />
           ),
         }}
       />
       <Tab.Screen
-        name="ConnectTab"
+        name="ProdukTab"
         component={ConnectNavigator}
         options={{
-          tabBarLabel: 'Connect',
+          tabBarLabel: 'Produk',
           tabBarIcon: ({ color, size }) => (
-            <FontIcon
-              name="share-alt"
-              color={color}
-              size={size}
-            />
+            <FontIcon name="shopping-cart" color={color} size={size} />
           ),
         }}
       />
       <Tab.Screen
-        name="ProfileTab"
+        name="Reservasi"
+        component={Reservasistack}
+        options={{
+          tabBarLabel: 'Reservasi',
+          tabBarIcon: ({ color, size }) => (
+            <FontIcon name="book" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
         component={ProfileNavigator}
         options={{
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color, size }) => (
-            <FontIcon
-              name="user"
-              color={color}
-              size={size}
-            />
+            <FontIcon name="user" color={color} size={size} />
           ),
         }}
       />

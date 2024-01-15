@@ -1,19 +1,21 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Text, StyleSheet, View, Linking } from 'react-native'
+import { Text, StyleSheet, View, Linking, Image } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import ScreenTemplate from '../../components/ScreenTemplate';
-import TextInputBox from '../../components/TextInputBox';
-import Button from '../../components/Button';
-import Logo from '../../components/Logo';
+import ScreenTemplate from '../../components/ScreenTemplate'
+import TextInputBox from '../../components/TextInputBox'
+import Button from '../../components/Button'
+import Logo from '../../components/Logo'
 import { firestore } from '../../firebase/config'
-import { setDoc, doc } from 'firebase/firestore';
+import { setDoc, doc } from 'firebase/firestore'
 import Spinner from 'react-native-loading-spinner-overlay'
 import { useNavigation } from '@react-navigation/native'
-import { colors, fontSize } from '../../theme';
+import { colors, fontSize } from '../../theme'
 import { ColorSchemeContext } from '../../context/ColorSchemeContext'
 import { defaultAvatar, eulaLink } from '../../config'
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../../firebase/config'
+import { logo } from '../../../assets'
+import Headerlogo from '../../components/Headerlogo'
 
 export default function Registration() {
   const [fullName, setFullName] = useState('')
@@ -25,7 +27,7 @@ export default function Registration() {
   const { scheme } = useContext(ColorSchemeContext)
   const isDark = scheme === 'dark'
   const colorScheme = {
-    text: isDark? colors.white : colors.primaryText
+    text: isDark ? colors.white : colors.primaryText,
   }
 
   useEffect(() => {
@@ -36,24 +38,28 @@ export default function Registration() {
     navigation.navigate('Login')
   }
 
-  const onRegisterPress = async() => {
+  const onRegisterPress = async () => {
     if (password !== confirmPassword) {
       alert("Passwords don't match.")
       return
     }
     try {
       setSpinner(true)
-      const response = await createUserWithEmailAndPassword(auth, email, password)
+      const response = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      )
       const uid = response.user.uid
       const data = {
         id: uid,
         email,
         fullName,
         avatar: defaultAvatar,
-      };
-      const usersRef = doc(firestore, 'users', uid);
+      }
+      const usersRef = doc(firestore, 'users', uid)
       await setDoc(usersRef, data)
-    } catch(e) {
+    } catch (e) {
       setSpinner(false)
       alert(e)
     }
@@ -65,43 +71,67 @@ export default function Registration() {
         style={styles.main}
         keyboardShouldPersistTaps="always"
       >
-        <Logo />
+        <Headerlogo />
+        <View style={{ alignItems: 'center' }}>
+          <Text
+            style={{
+              paddingVertical: 30,
+              fontSize: 30,
+              textTransform: 'uppercase',
+              fontWeight: 'bold',
+              color: colors.warnaFont,
+            }}
+          >
+            Daftar
+          </Text>
+        </View>
         <TextInputBox
-          placeholder='Your Name'
+          placeholder="Your Name"
           onChangeText={(text) => setFullName(text)}
           value={fullName}
           autoCapitalize="none"
         />
         <TextInputBox
-          placeholder='E-mail'
+          placeholder="E-mail"
           onChangeText={(text) => setEmail(text)}
           value={email}
           autoCapitalize="none"
-          keyboardType='email-address'
+          keyboardType="email-address"
         />
         <TextInputBox
           secureTextEntry={true}
-          placeholder='Password'
+          placeholder="Password"
           onChangeText={(text) => setPassword(text)}
           value={password}
           autoCapitalize="none"
         />
         <TextInputBox
           secureTextEntry={true}
-          placeholder='Confirm Password'
+          placeholder="Confirm Password"
           onChangeText={(text) => setConfirmPassword(text)}
           value={confirmPassword}
           autoCapitalize="none"
         />
         <Button
-          label='Agree and Create account'
-          color={colors.primary}
+          label="Submit Registrasi"
+          color={colors.warnaFont}
           onPress={() => onRegisterPress()}
         />
         <View style={styles.footerView}>
-          <Text style={[styles.footerText, {color: colorScheme.text}]}>Already got an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Log in</Text></Text>
+          <Text style={[styles.footerText, { color: colors.dark }]}>
+            Sudah Punya Akun?{' '}
+            <Text
+              onPress={onFooterLinkPress}
+              style={[styles.footerLink, { color: colors.warnaFont }]}
+            >
+              Log in
+            </Text>
+          </Text>
         </View>
-        <Text style={[styles.link, {color: colorScheme.text}]} onPress={ ()=>{ Linking.openURL(eulaLink)}}>Require agree <Text style={styles.eulaLink}>EULA</Text></Text>
+        <Text style={[styles.link, { color: colors.warnaFont }]}>
+          Saya menyetujui syarat dan ketentuan kebijakan privasi fima beauty
+          aesthetic !
+        </Text>
       </KeyboardAwareScrollView>
       <Spinner
         visible={spinner}
@@ -119,23 +149,25 @@ const styles = StyleSheet.create({
   },
   footerView: {
     flex: 1,
-    alignItems: "center",
+    alignItems: 'center',
     marginBottom: 20,
-    marginTop: 20
+    marginTop: 20,
   },
   footerText: {
     fontSize: fontSize.large,
   },
   footerLink: {
     color: colors.blueLight,
-    fontWeight: "bold",
-    fontSize: fontSize.large
+    fontWeight: 'bold',
+    fontSize: fontSize.large,
   },
   link: {
-    textAlign: 'center'
+    textAlign: 'center',
+    paddingHorizontal: 10,
+    fontSize: 15,
   },
   eulaLink: {
-    color: colors.blueLight,
-    fontSize: fontSize.middle
-  }
+    color: colors.warnaFont,
+    fontSize: fontSize.middle,
+  },
 })

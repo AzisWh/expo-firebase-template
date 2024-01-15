@@ -1,23 +1,25 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, Image } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import ScreenTemplate from '../../components/ScreenTemplate';
+import ScreenTemplate from '../../components/ScreenTemplate'
 import Button from '../../components/Button'
-import TextInputBox from '../../components/TextInputBox';
-import Logo from '../../components/Logo';
+import TextInputBox from '../../components/TextInputBox'
+import Logo from '../../components/Logo'
 import { firestore } from '../../firebase/config'
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore'
 import Spinner from 'react-native-loading-spinner-overlay'
 import { useNavigation } from '@react-navigation/native'
-import { colors, fontSize } from '../../theme';
+import { colors, fontSize } from '../../theme'
 import { ColorSchemeContext } from '../../context/ColorSchemeContext'
-import { LogBox } from 'react-native';
+import { LogBox } from 'react-native'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../../firebase/config'
+import { logo } from '../../../assets'
+import Headerlogo from '../../components/Headerlogo'
 
 // To ignore a useless warning in terminal.
 // https://stackoverflow.com/questions/44603362/setting-a-timer-for-a-long-period-of-time-i-e-multiple-minutes
-LogBox.ignoreLogs(['Setting a timer']);
+LogBox.ignoreLogs(['Setting a timer'])
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -27,7 +29,7 @@ export default function Login() {
   const { scheme } = useContext(ColorSchemeContext)
   const isDark = scheme === 'dark'
   const colorScheme = {
-    text: isDark? colors.white : colors.primaryText
+    text: isDark ? colors.white : colors.primaryText,
   }
 
   const onFooterLinkPress = () => {
@@ -35,10 +37,10 @@ export default function Login() {
   }
 
   useEffect(() => {
-    console.log('Login screen, ログイン画面')
+    console.log('Login screen')
   }, [])
 
-  const onLoginPress = async() => {
+  const onLoginPress = async () => {
     try {
       setSpinner(true)
       const response = await signInWithEmailAndPassword(auth, email, password)
@@ -47,14 +49,24 @@ export default function Login() {
       const firestoreDocument = await getDoc(usersRef)
       if (!firestoreDocument.exists) {
         setSpinner(false)
-        alert("User does not exist anymore.")
-        return;
+        alert('User does not exist anymore.')
+        return
       }
-    } catch(error) {
+    } catch (error) {
       setSpinner(false)
       alert(error)
     }
   }
+
+  const Separator = ({ color = 'black', thickness = 1, padding = 10 }) => (
+    <View
+      style={{
+        borderBottomWidth: thickness,
+        borderBottomColor: color,
+        paddingHorizontal: padding,
+      }}
+    />
+  )
 
   return (
     <ScreenTemplate>
@@ -62,9 +74,23 @@ export default function Login() {
         style={styles.main}
         keyboardShouldPersistTaps="always"
       >
+        <Headerlogo />
+        <View style={{ paddingVertical: 50, alignItems: 'center' }}>
+          <Text
+            style={{
+              fontSize: 20,
+              textTransform: 'uppercase',
+              fontWeight: 'bold',
+              color: colors.warnaFont,
+            }}
+          >
+            Wanita glowing indonesia
+          </Text>
+        </View>
+        <Separator color="black" thickness={2} padding={10} />
         <Logo />
         <TextInputBox
-          placeholder='E-mail'
+          placeholder="E-mail"
           onChangeText={(text) => setEmail(text)}
           autoCapitalize="none"
           value={email}
@@ -72,18 +98,26 @@ export default function Login() {
         />
         <TextInputBox
           secureTextEntry={true}
-          placeholder='Password'
+          placeholder="Password"
           onChangeText={(text) => setPassword(text)}
           value={password}
           autoCapitalize="none"
         />
         <Button
-          label='Log in'
-          color={colors.primary}
+          label="Login"
+          color={colors.warnaFont}
           onPress={() => onLoginPress()}
         />
         <View style={styles.footerView}>
-          <Text style={[styles.footerText, { color: colorScheme.text }]}>Don't have an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Sign up</Text></Text>
+          <Text style={[styles.footerText, { color: colorScheme.dark }]}>
+            Don't have an account?{' '}
+            <Text
+              onPress={onFooterLinkPress}
+              style={[styles.footerLink, { color: colors.warnaFont }]}
+            >
+              Sign up
+            </Text>
+          </Text>
         </View>
       </KeyboardAwareScrollView>
       <Spinner
@@ -102,16 +136,16 @@ const styles = StyleSheet.create({
   },
   footerView: {
     flex: 1,
-    alignItems: "center",
+    alignItems: 'center',
     marginBottom: 20,
-    marginTop: 20
+    marginTop: 20,
   },
   footerText: {
     fontSize: fontSize.large,
   },
   footerLink: {
     color: colors.blueLight,
-    fontWeight: "bold",
-    fontSize: fontSize.large
+    fontWeight: 'bold',
+    fontSize: fontSize.large,
   },
 })

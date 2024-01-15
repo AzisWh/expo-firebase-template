@@ -1,12 +1,9 @@
 {
   "expo": {
-    "name": "reactnative-expo-firebase-boilerplate-v2",
-    "slug": "reactnative-expo-firebase-boilerplate-v2",
+    "name": "Fimabeauty",
+    "slug": "Fimabeauty",
     "privacy": "public",
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/logo-sm.png",
@@ -17,11 +14,9 @@
     },
     "updates": {
       "enabled": true,
-      "fallbackToCacheTimeout": 10000,
+      "fallbackToCacheTimeout": 10000
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "reactnative.expo.firebase.boilerplate",
@@ -35,10 +30,7 @@
       "package": "reactnative.expo.firebase.boilerplate",
       "versionCode": 1,
       "userInterfaceStyle": "automatic",
-      "permissions": [
-        "VIBRATE",
-        "CAMERA"
-      ]
+      "permissions": ["VIBRATE", "CAMERA"]
     },
     "packagerOpts": {
       "config": "metro.config.js",
@@ -47,7 +39,11 @@
         "jsx",
         "svg",
         "ts",
-        "tsx"
+        "tsx",
+        "web.js",
+        "web.jsx",
+        "web.ts",
+        "web.tsx"
       ]
     },
     "description": ""
